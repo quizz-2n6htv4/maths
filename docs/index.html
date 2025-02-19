@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Math Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    #question {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    input[type="number"] {
+      padding: 8px;
+      font-size: 16px;
+      margin-right: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 20px;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Math Quiz</h1>
+  <div id="question"></div>
+  <input type="number" id="answer" placeholder="Your answer" />
+  <button onclick="checkAnswer()">Submit</button>
+  
+  <div id="result"></div>
+
+  <script>
+    let num1, num2, correctAnswer;
+
+    // Generate a new question
+    function generateQuestion() {
+      num1 = Math.floor(Math.random() * 500) + 1;
+      num2 = Math.floor(Math.random() * 500) + 1;
+      correctAnswer = num1 + num2;
+      
+      document.getElementById('question').textContent = `What is ${num1} + ${num2}?`;
+      document.getElementById('result').textContent = '';
+      document.getElementById('answer').value = '';
+    }
+
+    // Check the user's answer
+    function checkAnswer() {
+      const userAnswer = parseInt(document.getElementById('answer').value);
+      if (userAnswer === correctAnswer) {
+        document.getElementById('result').textContent = 'Correct! Well done.';
+        document.getElementById('result').style.color = 'green';
+      } else {
+        document.getElementById('result').textContent = `Incorrect. The correct answer is ${correctAnswer}.`;
+        document.getElementById('result').style.color = 'red';
+      }
+      setTimeout(generateQuestion, 2000); // Generate a new question after 2 seconds
+    }
+
+    // Start the quiz with a new question
+    window.onload = generateQuestion;
+  </script>
+
+</body>
+</html>
