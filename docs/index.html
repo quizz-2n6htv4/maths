@@ -28,7 +28,9 @@
     #score {
       font-size: 24px;
       font-weight: bold;
-      margin-bottom: 20px;
+      position: fixed;
+      top: 20px;
+      left: 20px;
       color: #fff;
     }
 
@@ -123,6 +125,7 @@
       <tr>
         <th>Question</th>
         <th>Your Answer</th>
+        <th>Result</th>
       </tr>
     </thead>
     <tbody>
@@ -131,16 +134,32 @@
   </table>
 
   <script>
-    let num1, num2, correctAnswer;
+    let num1, num2, correctAnswer, questionText, operation;
     let score = 0;
 
-    // Generate a new question
+    // Generate a random question (Addition, Subtraction, Multiplication)
     function generateQuestion() {
-      num1 = Math.floor(Math.random() * 500) + 1;
-      num2 = Math.floor(Math.random() * 500) + 1;
-      correctAnswer = num1 + num2;
+      const operations = ['+', '-', '*'];
+      operation = operations[Math.floor(Math.random() * operations.length)];
       
-      document.getElementById('question').textContent = `What is ${num1} + ${num2}?`;
+      if (operation === '+') {
+        num1 = Math.floor(Math.random() * 500) + 1;
+        num2 = Math.floor(Math.random() * 500) + 1;
+        correctAnswer = num1 + num2;
+        questionText = `What is ${num1} + ${num2}?`;
+      } else if (operation === '-') {
+        num1 = Math.floor(Math.random() * 500) + 1;
+        num2 = Math.floor(Math.random() * num1) + 1;  // Ensure num1 > num2 for subtraction
+        correctAnswer = num1 - num2;
+        questionText = `What is ${num1} - ${num2}?`;
+      } else if (operation === '*') {
+        num1 = Math.floor(Math.random() * 200) + 1;
+        num2 = Math.floor(Math.random() * 200) + 1;
+        correctAnswer = num1 * num2;
+        questionText = `What is ${num1} * ${num2}?`;
+      }
+      
+      document.getElementById('question').textContent = questionText;
       document.getElementById('result').textContent = '';
       document.getElementById('answer').value = '';
     }
@@ -148,24 +167,25 @@
     // Check the user's answer
     function checkAnswer() {
       const userAnswer = parseInt(document.getElementById('answer').value);
-      const questionText = `What is ${num1} + ${num2}?`;
+      const logTable = document.getElementById('logTable').getElementsByTagName('tbody')[0];
+      let result = "Failure";
 
       if (userAnswer === correctAnswer) {
         score++;
+        result = "Success";
         document.getElementById('result').textContent = 'Correct! Well done.';
         document.getElementById('result').style.color = 'green';
       } else {
         document.getElementById('result').textContent = `Incorrect. The correct answer is ${correctAnswer}.`;
         document.getElementById('result').style.color = 'red';
       }
-      
+
       // Update score display
       document.getElementById('score').textContent = `Score: ${score}`;
 
-      // Log the question and user's answer in the table
-      const logTable = document.getElementById('logTable').getElementsByTagName('tbody')[0];
+      // Log the question, user's answer, and result in the table
       const newRow = logTable.insertRow();
-      newRow.innerHTML = `<td>${questionText}</td><td>${userAnswer}</td>`;
+      newRow.innerHTML = `<td>${questionText}</td><td>${userAnswer}</td><td>${result}</td>`;
 
       setTimeout(generateQuestion, 2000); // Generate a new question after 2 seconds
     }
