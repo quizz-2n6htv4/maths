@@ -74,10 +74,34 @@
 
     #resetButton {
       background-color: #ff5733; /* Reset button with a red color */
+      position: fixed;
+      top: 20px;
+      right: 20px;
     }
 
     #resetButton:hover {
       background-color: #e84f2a;
+    }
+
+    table {
+      margin-top: 30px;
+      width: 80%;
+      border-collapse: collapse;
+      color: #fff;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border: 1px solid #fff;
+    }
+
+    th {
+      background-color: #ffcc00;
+    }
+
+    td {
+      background-color: #333;
     }
   </style>
 </head>
@@ -88,9 +112,23 @@
   <div id="question"></div>
   <input type="number" id="answer" placeholder="Your answer" />
   <button onclick="checkAnswer()">Submit</button>
-  <button id="resetButton" onclick="resetQuiz()">Reset Quiz</button>
   
+  <button id="resetButton" onclick="resetQuiz()">Reset Quiz</button>
+
   <div id="result"></div>
+
+  <!-- Log Table -->
+  <table id="logTable">
+    <thead>
+      <tr>
+        <th>Question</th>
+        <th>Your Answer</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Log entries will go here -->
+    </tbody>
+  </table>
 
   <script>
     let num1, num2, correctAnswer;
@@ -110,6 +148,8 @@
     // Check the user's answer
     function checkAnswer() {
       const userAnswer = parseInt(document.getElementById('answer').value);
+      const questionText = `What is ${num1} + ${num2}?`;
+
       if (userAnswer === correctAnswer) {
         score++;
         document.getElementById('result').textContent = 'Correct! Well done.';
@@ -122,6 +162,11 @@
       // Update score display
       document.getElementById('score').textContent = `Score: ${score}`;
 
+      // Log the question and user's answer in the table
+      const logTable = document.getElementById('logTable').getElementsByTagName('tbody')[0];
+      const newRow = logTable.insertRow();
+      newRow.innerHTML = `<td>${questionText}</td><td>${userAnswer}</td>`;
+
       setTimeout(generateQuestion, 2000); // Generate a new question after 2 seconds
     }
 
@@ -129,6 +174,7 @@
     function resetQuiz() {
       score = 0;
       document.getElementById('score').textContent = `Score: ${score}`;
+      document.getElementById('logTable').getElementsByTagName('tbody')[0].innerHTML = ''; // Clear log table
       generateQuestion();
     }
 
