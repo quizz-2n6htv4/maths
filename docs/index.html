@@ -137,7 +137,7 @@
   <button id="resetButton" onclick="resetQuiz()">Reset Quiz</button>
 
   <!-- Toggle Button to Show/Hide Log Table -->
-  <button id="toggleLogButton" onclick="toggleLogTable()">Show/Hide Log Table</button>
+  <button id="toggleLogButton" onclick="toggleLogTable()">Hide Log Table</button>
 
   <!-- Log Table -->
   <table id="logTable">
@@ -258,7 +258,7 @@
     // Toggle log table visibility
     function toggleLogTable() {
       const logTable = document.getElementById('logTable');
-      if (logTable.style.display === 'none') {
+      if (logTable.style.display == 'none') {
         logTable.style.display = 'block';
         document.getElementById('toggleLogButton').textContent = 'Hide Log Table';
       } else {
