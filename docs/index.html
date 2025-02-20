@@ -197,7 +197,7 @@
       let result = "Failure";
       let timestamp = new Date().toLocaleString();
 
-      if (attemptCount === 0) {
+      //if (attemptCount === 0) {
         // First attempt
         if (userAnswer === correctAnswer) {
           score++;
@@ -223,6 +223,7 @@
           const newRow = logTable.insertRow(0);  // Insert row at the top (index 0)
           newRow.innerHTML = `<td>${questionText}</td><td>${userAnswer}</td><td>Failure</td><td>${timestamp}</td>`;
         }
+      /*
       } else {
         // Second attempt (if first attempt was wrong)
         if (userAnswer === correctAnswer) {
@@ -246,6 +247,7 @@
 
         setTimeout(generateQuestion, 2000); // Generate a new question after 2 seconds
       }
+      */
     }
 
     // Reset the quiz
