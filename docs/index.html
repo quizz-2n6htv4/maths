@@ -157,7 +157,7 @@
     let num1, num2, correctAnswer, questionText, operation;
     let score = 0;
     let totalQuestions = 0;
-    let currentAnswer = null; // Track user's answer to allow retries
+    let attemptCount = 0;  // Track the number of attempts
 
     // Generate a random question (Addition, Subtraction, Multiplication)
     function generateQuestion() {
@@ -184,7 +184,7 @@
       document.getElementById('question').textContent = questionText;
       document.getElementById('result').textContent = '';
       document.getElementById('answer').value = '';
-      currentAnswer = null; // Allow retry if the user is incorrect
+      attemptCount = 0; // Reset attempt count for this question
     }
 
     // Check the user's answer
@@ -192,16 +192,45 @@
       const userAnswer = parseInt(document.getElementById('answer').value);
       const logTable = document.getElementById('logTable').getElementsByTagName('tbody')[0];
       let result = "Failure";
+      let timestamp = new Date().toLocaleString();
 
-      if (userAnswer === correctAnswer) {
-        score++;
-        totalQuestions++;
-        result = "Success";
-        document.getElementById('result').textContent = 'Correct! Well done.';
-        document.getElementById('result').style.color = 'green';
+      if (attemptCount === 0) {
+        // First attempt
+        if (userAnswer === correctAnswer) {
+          score++;
+          totalQuestions++;
+          result = "Success";
+          document.getElementById('result').textContent = 'Correct! Well done.';
+          document.getElementById('result').style.color = 'green';
 
-        // Log the question, user's answer, and result in the table
-        const timestamp = new Date().toLocaleString();
+          // Log the question, user's answer, and result in the table
+          const newRow = logTable.insertRow();
+          newRow.innerHTML = `<td>${questionText}</td><td>${userAnswer}</td><td>${result}</td><td>${timestamp}</td>`;
+
+          // Update score and total questions display
+          document.getElementById('score').textContent = `Score: ${score} | Questions: ${totalQuestions}`;
+          setTimeout(generateQuestion, 2000); // Generate a new question after 2 seconds
+        } else {
+          // Incorrect first attempt, allow a second try
+          attemptCount++;
+          document.getElementById('result').textContent = `Incorrect. Please try again.`;
+          document.getElementById('result').style.color = 'red';
+        }
+      } else {
+        // Second attempt (if first attempt was wrong)
+        if (userAnswer === correctAnswer) {
+          score++;
+          totalQuestions++;
+          result = "Success";
+          document.getElementById('result').textContent = 'Correct on second try!';
+          document.getElementById('result').style.color = 'green';
+        } else {
+          result = "Failure";
+          document.getElementById('result').textContent = `Incorrect. The correct answer is ${correctAnswer}.`;
+          document.getElementById('result').style.color = 'red';
+        }
+
+        // Log the result of the second attempt, regardless of correctness
         const newRow = logTable.insertRow();
         newRow.innerHTML = `<td>${questionText}</td><td>${userAnswer}</td><td>${result}</td><td>${timestamp}</td>`;
 
@@ -209,12 +238,6 @@
         document.getElementById('score').textContent = `Score: ${score} | Questions: ${totalQuestions}`;
 
         setTimeout(generateQuestion, 2000); // Generate a new question after 2 seconds
-      } else {
-        totalQuestions++;
-        currentAnswer = userAnswer; // Store the user's wrong answer for retry
-
-        document.getElementById('result').textContent = `Incorrect. Please try again.`;
-        document.getElementById('result').style.color = 'red';
       }
     }
 
