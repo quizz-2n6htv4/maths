@@ -6,48 +6,95 @@
   <title>Math Quiz</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Arial', sans-serif;
+      background-color: #00aaff; /* Blue background */
+      color: #fff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
       text-align: center;
-      margin-top: 50px;
     }
-    #question {
-      font-size: 24px;
+
+    h1 {
+      font-size: 36px;
       margin-bottom: 20px;
+      color: #fff;
     }
+
+    #score {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: #fff;
+    }
+
+    #question {
+      font-size: 28px;
+      margin-bottom: 20px;
+      color: #fff;
+      font-weight: bold;
+    }
+
     input[type="number"] {
-      padding: 8px;
-      font-size: 16px;
+      padding: 10px 15px;
+      font-size: 18px;
+      border-radius: 10px;
+      border: none;
       margin-right: 10px;
+      margin-bottom: 20px;
+      outline: none;
     }
+
     button {
-      padding: 10px 20px;
-      font-size: 16px;
-      background-color: #4CAF50;
-      color: white;
+      padding: 15px 30px;
+      font-size: 18px;
+      border-radius: 10px;
       border: none;
       cursor: pointer;
+      background-color: #ffcc00; /* Happy yellow */
+      color: #333;
+      margin-top: 10px;
+      transition: background-color 0.3s;
     }
+
     button:hover {
-      background-color: #45a049;
+      background-color: #ffb300; /* Darker yellow on hover */
     }
+
     #result {
       margin-top: 20px;
-      font-size: 20px;
-      color: green;
+      font-size: 22px;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    #resetButton {
+      background-color: #ff5733; /* Reset button with a red color */
+    }
+
+    #resetButton:hover {
+      background-color: #e84f2a;
     }
   </style>
 </head>
 <body>
 
   <h1>Math Quiz</h1>
+  <div id="score">Score: 0</div>
   <div id="question"></div>
   <input type="number" id="answer" placeholder="Your answer" />
   <button onclick="checkAnswer()">Submit</button>
+  <button id="resetButton" onclick="resetQuiz()">Reset Quiz</button>
   
   <div id="result"></div>
 
   <script>
     let num1, num2, correctAnswer;
+    let score = 0;
 
     // Generate a new question
     function generateQuestion() {
@@ -64,13 +111,25 @@
     function checkAnswer() {
       const userAnswer = parseInt(document.getElementById('answer').value);
       if (userAnswer === correctAnswer) {
+        score++;
         document.getElementById('result').textContent = 'Correct! Well done.';
         document.getElementById('result').style.color = 'green';
       } else {
         document.getElementById('result').textContent = `Incorrect. The correct answer is ${correctAnswer}.`;
         document.getElementById('result').style.color = 'red';
       }
+      
+      // Update score display
+      document.getElementById('score').textContent = `Score: ${score}`;
+
       setTimeout(generateQuestion, 2000); // Generate a new question after 2 seconds
+    }
+
+    // Reset the quiz
+    function resetQuiz() {
+      score = 0;
+      document.getElementById('score').textContent = `Score: ${score}`;
+      generateQuestion();
     }
 
     // Start the quiz with a new question
