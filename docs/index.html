@@ -174,12 +174,12 @@
         questionText = `${num1} + ${num2}`;
       } else if (operation === '-') {
         num1 = Math.floor(Math.random() * 500) + 1;
-        num2 = Math.floor(Math.random() * num1) + 1;  // Ensure num1 > num2 for subtraction
+        num2 = Math.floor(Math.random() * 500) + 1;  // Ensure num1 > num2 for subtraction
         correctAnswer = num1 - num2;
         questionText = `${num1} - ${num2}`;
       } else if (operation === 'x') { // 'x' for multiplication
-        num1 = Math.floor(Math.random() * 200) + 1;
-        num2 = Math.floor(Math.random() * 200) + 1;
+        num1 = Math.floor(Math.random() * 10) + 1;
+        num2 = Math.floor(Math.random() * 10) + 1;
         correctAnswer = num1 * num2;
         questionText = `${num1} x ${num2}`;
       }
