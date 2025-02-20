@@ -85,11 +85,12 @@
       background-color: #e84f2a;
     }
 
-    table {
+    #logTable {
       margin-top: 30px;
       width: 80%;
       border-collapse: collapse;
       color: #fff;
+      display: none; /* Hide by default */
     }
 
     th, td {
@@ -105,12 +106,27 @@
     td {
       background-color: #333;
     }
+
+    #toggleLogButton {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #00aaff;
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+
+    #toggleLogButton:hover {
+      background-color: #0088cc;
+    }
   </style>
 </head>
 <body>
 
   <h1>Math Quiz</h1>
-  <div id="score">Score: 0</div>
+  <div id="score">Score: 0 | Questions: 0</div>
   <div id="question"></div>
   <input type="number" id="answer" placeholder="Your answer" />
   <button onclick="checkAnswer()">Submit</button>
@@ -133,9 +149,13 @@
     </tbody>
   </table>
 
+  <!-- Toggle Button to Show/Hide Log Table -->
+  <button id="toggleLogButton" onclick="toggleLogTable()">Show/Hide Log Table</button>
+
   <script>
     let num1, num2, correctAnswer, questionText, operation;
     let score = 0;
+    let totalQuestions = 0;
 
     // Generate a random question (Addition, Subtraction, Multiplication)
     function generateQuestion() {
@@ -172,16 +192,18 @@
 
       if (userAnswer === correctAnswer) {
         score++;
+        totalQuestions++;
         result = "Success";
         document.getElementById('result').textContent = 'Correct! Well done.';
         document.getElementById('result').style.color = 'green';
       } else {
+        totalQuestions++;
         document.getElementById('result').textContent = `Incorrect. The correct answer is ${correctAnswer}.`;
         document.getElementById('result').style.color = 'red';
       }
 
-      // Update score display
-      document.getElementById('score').textContent = `Score: ${score}`;
+      // Update score and total questions display
+      document.getElementById('score').textContent = `Score: ${score} | Questions: ${totalQuestions}`;
 
       // Log the question, user's answer, and result in the table
       const newRow = logTable.insertRow();
@@ -193,9 +215,22 @@
     // Reset the quiz
     function resetQuiz() {
       score = 0;
-      document.getElementById('score').textContent = `Score: ${score}`;
+      totalQuestions = 0;
+      document.getElementById('score').textContent = `Score: ${score} | Questions: ${totalQuestions}`;
       document.getElementById('logTable').getElementsByTagName('tbody')[0].innerHTML = ''; // Clear log table
       generateQuestion();
+    }
+
+    // Toggle log table visibility
+    function toggleLogTable() {
+      const logTable = document.getElementById('logTable');
+      if (logTable.style.display === 'none') {
+        logTable.style.display = 'block';
+        document.getElementById('toggleLogButton').textContent = 'Hide Log Table';
+      } else {
+        logTable.style.display = 'none';
+        document.getElementById('toggleLogButton').textContent = 'Show Log Table';
+      }
     }
 
     // Start the quiz with a new question
