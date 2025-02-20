@@ -136,7 +136,8 @@
   
   <button id="resetButton" onclick="resetQuiz()">Reset Quiz</button>
 
-  <div id="result"></div>
+  <!-- Toggle Button to Show/Hide Log Table -->
+  <button id="toggleLogButton" onclick="toggleLogTable()">Show/Hide Log Table</button>
 
   <!-- Log Table -->
   <table id="logTable">
@@ -152,9 +153,6 @@
       <!-- Log entries will go here -->
     </tbody>
   </table>
-
-  <!-- Toggle Button to Show/Hide Log Table -->
-  <button id="toggleLogButton" onclick="toggleLogTable()">Show/Hide Log Table</button>
 
   <script>
     let num1, num2, correctAnswer, questionText, operation;
@@ -206,8 +204,8 @@
           document.getElementById('result').textContent = 'Correct! Well done.';
           document.getElementById('result').style.color = 'green';
 
-          // Log the question, user's answer, and result in the table
-          const newRow = logTable.insertRow();
+          // Log the question, user's answer, and result at the top of the table
+          const newRow = logTable.insertRow(0);  // Insert row at the top (index 0)
           newRow.innerHTML = `<td>${questionText}</td><td>${userAnswer}</td><td>${result}</td><td>${timestamp}</td>`;
 
           // Update score and total questions display
@@ -220,7 +218,7 @@
           document.getElementById('result').style.color = 'red';
 
           // Log the failure of the first attempt
-          const newRow = logTable.insertRow();
+          const newRow = logTable.insertRow(0);  // Insert row at the top (index 0)
           newRow.innerHTML = `<td>${questionText}</td><td>${userAnswer}</td><td>Failure</td><td>${timestamp}</td>`;
         }
       } else {
@@ -238,7 +236,7 @@
         }
 
         // Log the result of the second attempt, regardless of correctness
-        const newRow = logTable.insertRow();
+        const newRow = logTable.insertRow(0);  // Insert row at the top (index 0)
         newRow.innerHTML = `<td>${questionText}</td><td>${userAnswer}</td><td>${result}</td><td>${timestamp}</td>`;
 
         // Update score and total questions display
