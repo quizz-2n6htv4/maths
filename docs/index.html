@@ -91,6 +91,8 @@
       border-collapse: collapse;
       color: #fff;
       display: none; /* Hide by default */
+      margin-left: auto;
+      margin-right: auto;
     }
 
     th, td {
@@ -168,17 +170,17 @@
         num1 = Math.floor(Math.random() * 500) + 1;
         num2 = Math.floor(Math.random() * 500) + 1;
         correctAnswer = num1 + num2;
-        questionText = `What is ${num1} + ${num2}?`;
+        questionText = `${num1} + ${num2}`;
       } else if (operation === '-') {
         num1 = Math.floor(Math.random() * 500) + 1;
         num2 = Math.floor(Math.random() * num1) + 1;  // Ensure num1 > num2 for subtraction
         correctAnswer = num1 - num2;
-        questionText = `What is ${num1} - ${num2}?`;
+        questionText = `${num1} - ${num2}`;
       } else if (operation === 'x') { // 'x' for multiplication
         num1 = Math.floor(Math.random() * 200) + 1;
         num2 = Math.floor(Math.random() * 200) + 1;
         correctAnswer = num1 * num2;
-        questionText = `What is ${num1} x ${num2}?`;
+        questionText = `${num1} x ${num2}`;
       }
       
       document.getElementById('question').textContent = questionText;
@@ -215,6 +217,10 @@
           attemptCount++;
           document.getElementById('result').textContent = `Incorrect. Please try again.`;
           document.getElementById('result').style.color = 'red';
+
+          // Log the failure of the first attempt
+          const newRow = logTable.insertRow();
+          newRow.innerHTML = `<td>${questionText}</td><td>${userAnswer}</td><td>Failure</td><td>${timestamp}</td>`;
         }
       } else {
         // Second attempt (if first attempt was wrong)
@@ -268,4 +274,3 @@
 
 </body>
 </html>
-
