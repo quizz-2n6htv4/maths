@@ -168,10 +168,12 @@
         questionText = `${num1} x ${num2}`;
       } else if (operation === '÷') {
         num2 = Math.floor(Math.random() * 100) + 1;  // Ensure num2 is between 1 and 10
-        num1 = num2 * Math.floor(Math.random() * 50); // Ensure num1 is a multiple of num2
-        correctAnswer = num1 / num2;
+        num1 = num2 * (Math.floor(Math.random() * 50) + 1); // Ensure num1 is a multiple of num2
+        correctAnswer = num1 / num2;  // This will now always be an integer
         questionText = `${num1} ÷ ${num2}`;
       }
+
+
       
       document.getElementById('question').textContent = questionText;
       document.getElementById('result').textContent = '';
