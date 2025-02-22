@@ -7,7 +7,7 @@
   <style>
     body {
       font-family: 'Arial', sans-serif;
-      background-color: #00aaff; /* Blue background */
+      background-color: #00aaff;
       color: #fff;
       margin: 0;
       padding: 0;
@@ -57,14 +57,14 @@
       border-radius: 10px;
       border: none;
       cursor: pointer;
-      background-color: #ffcc00; /* Happy yellow */
+      background-color: #ffcc00;
       color: #333;
       margin-top: 10px;
       transition: background-color 0.3s;
     }
 
     button:hover {
-      background-color: #ffb300; /* Darker yellow on hover */
+      background-color: #ffb300;
     }
 
     #result {
@@ -75,7 +75,7 @@
     }
 
     #resetButton {
-      background-color: #ff5733; /* Reset button with a red color */
+      background-color: #ff5733;
       position: fixed;
       top: 20px;
       right: 20px;
@@ -87,12 +87,12 @@
 
     #logTable {
       margin-top: 30px;
-      width: 80%; /* Make sure the table width is set */
-      max-width: 1000px; /* Optional: limit the maximum width */
+      width: 80%;
+      max-width: 1000px;
       border-collapse: collapse;
       color: #fff;
       margin-left: auto;
-      margin-right: auto; /* This centers the table */
+      margin-right: auto;
     }
 
     th, td {
@@ -108,13 +108,12 @@
     td {
       background-color: #333;
     }
-
   </style>
 </head>
 <body>
 
   <h1>Math Quiz</h1>
-  <div id="score">Score: 0 | Questions: 0</div>
+  <div id="score">Score: 0</div>
   <div id="question"></div>
   <input type="number" id="answer" placeholder="Your answer" />
   <button onclick="checkAnswer()">Submit</button>
@@ -141,64 +140,57 @@
   <script>
     let num1, num2, correctAnswer, questionText, operation;
     let score = 0;
-    let totalQuestions = 0;
-    let attemptCount = 0;  // Track the number of attempts
-    let correctAnswerTimer = null;  // Timer to allow answer submission after correct answer
-    let logEntries = [];  // To store the log entries (last 5 only)
+    let attemptCount = 0;
+    let logEntries = [];
 
-    // Generate a random question (Addition, Subtraction, Multiplication, Division)
+    // Generate a random question
     function generateQuestion() {
-      const operations = ['+', '-', 'x', '÷'];
+      //const operations = ['+', '-', 'x', '÷'];
+      const operations = ['+', '-', 'x'];
       operation = operations[Math.floor(Math.random() * operations.length)];
       
       if (operation === '+') {
-        num1 = Math.floor(Math.random() * 9999) + 1;
-        num2 = Math.floor(Math.random() * 9999) + 1;
+        num1 = Math.floor(Math.random() * 500) + 1;
+        num2 = Math.floor(Math.random() * 500) + 1;
         correctAnswer = num1 + num2;
         questionText = `${num1} + ${num2}`;
       } else if (operation === '-') {
-        num1 = Math.floor(Math.random() * 9999) + 1;
-        num2 = Math.floor(Math.random() * 2000) + 1;
+        num1 = Math.floor(Math.random() * 500) + 1;
+        num2 = Math.floor(Math.random() * 500) + 1;
         correctAnswer = num1 - num2;
         questionText = `${num1} - ${num2}`;
       } else if (operation === 'x') {
-        num1 = Math.floor(Math.random() * 200) + 1;
-        num2 = Math.floor(Math.random() * 100) + 1;
+        num1 = Math.floor(Math.random() * 10) + 1;
+        num2 = Math.floor(Math.random() * 10) + 1;
         correctAnswer = num1 * num2;
         questionText = `${num1} x ${num2}`;
-      } else if (operation === '÷') {
-        num2 = Math.floor(Math.random() * 100) + 1;  // Ensure num2 is between 1 and 10
-        num1 = num2 * (Math.floor(Math.random() * 50) + 1); // Ensure num1 is a multiple of num2
-        correctAnswer = num1 / num2;  // This will now always be an integer
+      } /* else if (operation === '÷') {
+        num2 = Math.floor(Math.random() * 100) + 1;
+        num1 = num2 * (Math.floor(Math.random() * 50) + 1);
+        correctAnswer = num1 / num2;
         questionText = `${num1} ÷ ${num2}`;
-      }
+      } */
 
-
-      
       document.getElementById('question').textContent = questionText;
       document.getElementById('result').textContent = '';
       document.getElementById('answer').value = '';
-      attemptCount = 0; // Reset attempt count for this question
-      clearTimeout(correctAnswerTimer);  // Reset the timer if a new question is generated
+      attemptCount = 0;
     }
 
-    // Function to save score and log to local storage
+    // Save score and logs to local storage
     function saveToLocalStorage() {
       localStorage.setItem('score', score);
-      localStorage.setItem('totalQuestions', totalQuestions);
-      localStorage.setItem('logEntries', JSON.stringify(logEntries)); // Save the log entries
+      localStorage.setItem('logEntries', JSON.stringify(logEntries));
     }
 
-    // Function to load score and log from local storage
+    // Load saved data from local storage
     function loadFromLocalStorage() {
       const savedScore = localStorage.getItem('score');
-      const savedTotalQuestions = localStorage.getItem('totalQuestions');
       const savedLogEntries = localStorage.getItem('logEntries');
 
-      if (savedScore !== null && savedTotalQuestions !== null) {
+      if (savedScore !== null) {
         score = parseInt(savedScore);
-        totalQuestions = parseInt(savedTotalQuestions);
-        document.getElementById('score').textContent = `Score: ${score} | Questions: ${totalQuestions}`;
+        document.getElementById('score').textContent = `Score: ${score}`;
       }
 
       if (savedLogEntries !== null) {
@@ -207,37 +199,38 @@
       }
     }
 
-    // Display the last 5 log entries
+    // Display only the latest 5 log entries
     function displayLogEntries() {
       const logTableBody = document.getElementById('logTable').getElementsByTagName('tbody')[0];
-      logTableBody.innerHTML = '';  // Clear current log table
-      logEntries.slice(0, 5).forEach(entry => { // Show only the last 5 entries
-        const newRow = logTableBody.insertRow(0);  // Insert new row at the top (index 0)
+      logTableBody.innerHTML = '';
+
+      // Show only the 5 most recent entries (latest at the top)
+      const recentEntries = logEntries.slice(0, 5);
+
+      recentEntries.forEach(entry => {
+        const newRow = logTableBody.insertRow();
         newRow.innerHTML = `<td>${entry.question}</td><td>${entry.userAnswer}</td><td>${entry.result}</td><td>${entry.timestamp}</td>`;
       });
     }
 
-    // Update the checkAnswer function to save after each answer check
+    // Check answer logic
     function checkAnswer() {
       const userAnswer = parseInt(document.getElementById('answer').value);
       let result = "Failure";
       let timestamp = new Date().toLocaleString();
 
-      // First attempt
-      if (attemptCount === 0) {
-        if (userAnswer === correctAnswer) {
-          score++;
-          totalQuestions++;
-          result = "Success";
-          document.getElementById('result').textContent = 'Correct! Well done.';
-          document.getElementById('result').style.color = 'green';
-        } else {
-          result = "Failure";
-          document.getElementById('result').textContent = `Incorrect. Please try again.`;
-          document.getElementById('result').style.color = 'red';
-        }
+      if (isNaN(userAnswer)) {
+        document.getElementById('result').textContent = `Please enter a valid number.`;
+        document.getElementById('result').style.color = 'orange';
+        return;
+      }
 
-        // Log the question, user's answer, and result at the top of the table
+      if (userAnswer === correctAnswer) {
+        score++;
+        result = "Success";
+        document.getElementById('result').textContent = 'Correct! Well done.';
+        document.getElementById('result').style.color = 'green';
+
         logEntries.unshift({
           question: questionText,
           userAnswer: userAnswer,
@@ -245,47 +238,53 @@
           timestamp: timestamp
         });
 
-        // Limit to last 5 log entries
-        if (logEntries.length > 5) logEntries.pop();  // Remove the oldest log entry if more than 5
+        saveToLocalStorage();
+        displayLogEntries();
 
-        // Update score and total questions display
-        document.getElementById('score').textContent = `Score: ${score} | Questions: ${totalQuestions}`;
-        saveToLocalStorage(); // Save the new state to local storage
-        displayLogEntries(); // Display the updated log entries
+        document.getElementById('score').textContent = `Score: ${score}`;
+        setTimeout(generateQuestion, 100);
+      } else {
+        result = "Failure";
+        attemptCount++;
+        document.getElementById('result').textContent = `Incorrect. Try again. (Attempt ${attemptCount})`;
+        document.getElementById('result').style.color = 'red';
 
-        // Allow submission of correct answer again within 5 seconds
-        correctAnswerTimer = setTimeout(generateQuestion, 5000);  // Generate a new question after 5 seconds
+        logEntries.unshift({
+          question: questionText,
+          userAnswer: userAnswer,
+          result: result,
+          timestamp: timestamp
+        });
+
+        saveToLocalStorage();
+        displayLogEntries();
       }
     }
 
-    // Update resetQuiz to reset and save data to local storage
+    // Reset quiz
     function resetQuiz() {
       score = 0;
-      totalQuestions = 0;
-      logEntries = []; // Clear the log entries
-      document.getElementById('score').textContent = `Score: ${score} | Questions: ${totalQuestions}`;
-      document.getElementById('logTable').getElementsByTagName('tbody')[0].innerHTML = ''; // Clear log table
-      saveToLocalStorage(); // Save the reset state to local storage
+      logEntries = [];
+      document.getElementById('score').textContent = `Score: ${score}`;
+      document.getElementById('logTable').getElementsByTagName('tbody')[0].innerHTML = '';
+      saveToLocalStorage();
       generateQuestion();
     }
 
-    // Log page refresh or reset
-    window.onbeforeunload = function() {
-      const timestamp = new Date().toLocaleString();
+    // Log page refresh event
+    window.onbeforeunload = function () {
+      let timestamp = new Date().toLocaleString();
       logEntries.unshift({
-        question: "Page refresh",
+        question: "Page refreshed",
         userAnswer: "N/A",
-        result: "Page refresh",
+        result: "Page refreshed",
         timestamp: timestamp
       });
 
-      // Limit to last 5 log entries
-      if (logEntries.length > 5) logEntries.pop();
-      saveToLocalStorage(); // Save refresh log to local storage
+      saveToLocalStorage();
     };
 
-    // Start the quiz with a new question, and load any saved data
-    window.onload = function() {
+    window.onload = function () {
       loadFromLocalStorage();
       generateQuestion();
     };
