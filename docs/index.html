@@ -211,7 +211,7 @@
     function displayLogEntries() {
       const logTableBody = document.getElementById('logTable').getElementsByTagName('tbody')[0];
       logTableBody.innerHTML = '';  // Clear current log table
-      logEntries.slice(0, 5).forEach(entry => { // Show only the last 5 entries
+      logEntries.slice(0, 200).forEach(entry => { // Show only the last 5 entries
         const newRow = logTableBody.insertRow(0);  // Insert new row at the top (index 0)
         newRow.innerHTML = `<td>${entry.question}</td><td>${entry.userAnswer}</td><td>${entry.result}</td><td>${entry.timestamp}</td>`;
       });
